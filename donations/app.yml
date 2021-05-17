@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aiapp
+spec:
+  selector:
+    matchLabels:
+      app: aiapp
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: aiapp
+    spec:
+      containers:
+      - name: aiapp
+        image: xxxuhong.azurecr.io/spring-boot-ai:latest
+        imagePullPolicy: Always
+        ports:
+        - name: aiapp
+          containerPort: 8080
+          protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aiapp-lb
+  labels:
+    app: sbapp
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8080
+  selector:
+    app: aiapp
